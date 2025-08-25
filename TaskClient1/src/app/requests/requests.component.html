@@ -1,0 +1,63 @@
+<div class="requests-container">
+  <h2 class="title">📌 כל הפניות</h2>
+
+  <table class="crazy-table">
+    <thead>
+      <tr>
+        <th>מס'</th>
+        <th>שם הפונה</th>
+        <th>נושא</th>
+        <th>תוכן</th>
+        <th>תאריך יצירה</th>
+        <th>פעולות</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let request of requests; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ request.name }}</td>
+        <td>{{ request.subject }}</td>
+        <td>{{ request.content || '-' }}</td>
+        <td>{{ request.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+        <td>
+          <button (click)="editRequest(request)" class="btn-edit">✏️</button>
+          <button (click)="deleteRequest(request.id!)" class="btn-delete">🗑️</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr />
+
+  <button class="toggle-form-btn" (click)="toggleForm()">
+    {{ showForm ? '❌ סגור טופס' : '➕ הוסף פנייה חדשה' }}
+  </button>
+
+  <div class="form-card" *ngIf="showForm">
+    <form [formGroup]="requestForm" (ngSubmit)="addRequest()">
+      <div class="form-group">
+        <label for="name">שם הפונה</label>
+        <input id="name" type="text" formControlName="name" placeholder="הכנס שם..." />
+        <div class="error" *ngIf="requestForm.get('name')?.touched && requestForm.get('name')?.invalid">
+            
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="subject">נושא</label>
+        <input id="subject" type="text" formControlName="subject" placeholder="הכנס נושא..." />
+        <div class="error" *ngIf="requestForm.get('subject')?.touched && requestForm.get('subject')?.invalid">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="content">תוכן</label>
+        <textarea id="content" rows="3" formControlName="content" placeholder="כתוב כאן..."></textarea>
+      </div>
+
+      <button type="submit" [disabled]="requestForm.invalid" class="btn-submit">
+        {{ editingRequestId ? '✏️ עדכן פנייה' : '🚀 ..שלח פנייה' }}
+      </button>
+    </form>
+  </div>
+</div>

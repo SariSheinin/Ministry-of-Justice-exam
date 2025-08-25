@@ -1,0 +1,29 @@
+<h2>Tasks</h2>
+
+<!-- טופס להוספה/עריכה -->
+<form [formGroup]="taskForm">
+  <input formControlName="title" placeholder="Task Title" />
+  <input type="date" formControlName="dueBy" />
+  <label>
+    <input type="checkbox" formControlName="isComplete" /> Complete
+  </label>
+
+  <div style="margin-top: 8px;">
+    <button type="button" *ngIf="editTaskId === null" (click)="addTask()">➕ Add Task</button>
+    <button type="button" *ngIf="editTaskId !== null" (click)="saveEdit()">💾 Save</button>
+    <button type="button" *ngIf="editTaskId !== null" (click)="cancelEdit()">❌ Cancel</button>
+  </div>
+</form>
+
+<hr />
+
+<!-- רשימת משימות -->
+<div class="task-grid">
+  <div class="task-card" *ngFor="let task of tasks">
+    <h3>{{task.title}}</h3>
+    <p>Due: {{task.dueBy | date}}</p>
+    <p>Status: {{task.isComplete ? 'Complete' : 'Pending'}}</p>
+    <button (click)="deleteTask(task.id)">🗑 Delete</button>
+    <button (click)="startEdit(task)">✏ Edit</button>
+  </div>
+</div>
